@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">СurrencyСonverter</string>
+
+    <string-array name="currencies">
+        <item>RUB</item>
+        <item>USD</item>
+        <item>BTC</item>
+        <item>GBP</item>
+        <item>EUR</item>
+        <item>ALL</item>
+        <item>BBD</item>
+        <item>BTN</item>
+        <item>CUP</item>
+        <item>XCD</item>
+        <item>XAF</item>
+    </string-array>
+</resources>
