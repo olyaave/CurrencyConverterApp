@@ -40,5 +40,7 @@ dependencies {
     implementation 'com.loopj.android:android-async-http:1.4.9'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
+    compile "com.github.biodunalfet:SlidingSquaresLoader:1.0"
+    compile 'com.github.ishan1604:tsview:1.0.0'
 
 }
