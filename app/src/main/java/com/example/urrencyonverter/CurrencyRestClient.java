@@ -12,6 +12,10 @@ public class CurrencyRestClient {
 
     public static void get(String currencyKey, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.addHeader("Accept", "application/json");
+        String str = String.valueOf(client.getResponseTimeout());
+//        client.setConnectTimeout(100);
+//        client.setResponseTimeout(100);
+//        client.setTimeout(100);
         client.get(getAbsoluteUrl(currencyKey), params, responseHandler);
     }
 
@@ -20,7 +24,7 @@ public class CurrencyRestClient {
     }
 
     private static String getAbsoluteUrl(String currencyKey) {
-        return  "https://free.currconv.com/api/v7/convert?q=" + currencyKey + "&compact=ultra&apiKey=40d2bfbedfb51dbc97e2";
+        return "https://free.currconv.com/api/v7/convert?q=" + currencyKey + "&compact=ultra&apiKey=40d2bfbedfb51dbc97e2";
     }
-}
 
+}

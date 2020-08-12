@@ -15,10 +15,15 @@
         <item>XAF</item>
     </string-array>
 
-    <string name="error_500">Нет подключение к интернету.</string>
+    <string name="error_500">Нет подключения к интернету.</string>
     <string name="error_404">Неправильный URL, или этой валюты не существует.</string>
     <string name="error_503">Ошибка сервера.</string>
     <string name="error_other">Неопознанная ошибка. Попробуйте снова позже.</string>
+
+    <string name="close_app">Закрыть приложение</string>
+    <string name="try_again">Попробовать еще раз</string>
+    <string name="convert_from">Конвертировать из</string>
+    <string name="convert_to">Конвертировать в</string>
 
 
 </resources>
