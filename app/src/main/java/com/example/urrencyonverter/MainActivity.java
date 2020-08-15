@@ -8,14 +8,18 @@ import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.room.Room;
+import com.example.urrencyonverter.DatabaseRoom.AppDatabase;
+import com.example.urrencyonverter.DatabaseRoom.ThreadDeleting;
+import com.example.urrencyonverter.DatabaseRoom.ThreadInsert;
 
 import java.io.Serializable;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, TextView.OnEditorActionListener, NoticeDialogFragment.NoticeDialogListener{
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
+        TextView.OnEditorActionListener, NoticeDialogFragment.NoticeDialogListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +29,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         else
             setContentView(R.layout.activity_land);
 
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database-1")
+                .fallbackToDestructiveMigration().build();
 
         listOfCurrencyName = getResources().getStringArray(R.array.currencies);
-        listOfCurrencyValue = new HashMap<String, Double>();
+        listOfCurrencyValue = new ArrayList<>();
         if (savedInstanceState != null) {
-            listOfCurrencyValue = (Map<String, Double>) savedInstanceState.getSerializable("listOfValue");
+            listOfCurrencyValue = (ArrayList<currencyPair>) savedInstanceState.getSerializable("listOfValue");
             isShowingDialog = savedInstanceState.getBoolean("isShow");
             if(isShowingDialog) {
                 showNoticeDialog(savedInstanceState.getString("dialogError"));
-
             }
         }
 
@@ -77,6 +82,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinnerTo.setOnItemSelectedListener(this);
     }
 
+    public  void clearDatabase(){
+        ThreadDeleting thread = new ThreadDeleting(db);
+        thread.start();
+    }
+
+    public  void updateDatabase(){
+        if(listOfCurrencyValue.size() % 5 == 0 && listOfCurrencyValue.size() > 0){
+            // update last 15 elements
+            ThreadInsert thread = new ThreadInsert(db);
+            thread.addList(listOfCurrencyValue);
+            thread.start();
+//            Log.i("Database:", "У меня закончились силы..........");
+        }
+    }
+
     private void setRateValue(){
 
         if(fromText.getText().toString().equals(""))
@@ -118,11 +138,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         Double rate = findValueInList(fromCurrency + "_" + toCurrency);
         String str = "" + toText.getText();
-
-        rate =   Double.parseDouble(str.replaceAll(",", ".")) / rate;
-
+        try {
+            rate = Double.parseDouble(str.replaceAll(",", ".")) / rate;
+        } catch (NullPointerException e){
+            Log.e("SetReverseRateValue: ", "При делении rate = null!");
+        }
         Log.i("Rate Value:", String.valueOf(rate));
-
         getValue(rate, fromText, true);
     }
 
@@ -141,13 +162,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void addValueInList(String from_to, Double rate){
-            listOfCurrencyValue.put(from_to, rate);
+        if(findValueInList(from_to) != null) return;
+        listOfCurrencyValue.add(new currencyPair(from_to, rate));
+        updateDatabase();
     }
 
     private Double findValueInList(String from_to){
-        for (Map.Entry<String, Double> currencyPair : listOfCurrencyValue.entrySet()) {
-            if(currencyPair.getKey().equals(from_to))
-                return currencyPair.getValue();
+        for (com.example.urrencyonverter.currencyPair currencyPair : listOfCurrencyValue) {
+            if(currencyPair.fromToName.equals(from_to))
+                return currencyPair.value;
         }
         return null;
     }
@@ -179,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onSaveInstanceState(Bundle outState) {
 
-        outState.putSerializable("listOfValue", (Serializable) listOfCurrencyValue);
+        outState.putSerializable("listOfValue", listOfCurrencyValue);
         outState.putString("fromCurrency", fromCurrency);
         outState.putString("toCurrency", toCurrency);
         outState.putString("fromValue", fromValue);
@@ -222,8 +245,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         finish();
     }
 
+    AppDatabase db;
+
     private String[] listOfCurrencyName;
-    private Map<String, Double> listOfCurrencyValue;
+    private ArrayList<currencyPair> listOfCurrencyValue;
 
     private String fromCurrency;
     private String toCurrency;

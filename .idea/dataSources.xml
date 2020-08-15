@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="Android SQLite list shm" uuid="a6bae953-1fc7-4d3b-9a52-a555f8d4cefd">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\oly26\AppData\Local\JetBrains\IntelliJIdea2020.1\android\databases\EMULATOR_Pixel_2_API_25\com.example.urrencyonverter\internal\database-list-shm</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="Android SQLite new" uuid="39d3e6ca-3625-47b1-b9ae-f3231232f532">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\oly26\AppData\Local\JetBrains\IntelliJIdea2020.1\android\databases\EMULATOR_Pixel_2_API_25\com.example.urrencyonverter\internal\database-new</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="Database" uuid="b9b4686e-841c-4f03-9051-6db51bad4f6f">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\oly26\AppData\Local\JetBrains\IntelliJIdea2020.1\android\databases\EMULATOR_Pixel_2_API_25\com.example.urrencyonverter\internal\database</jdbc-url>
+    </data-source>
+  </component>
+</project>

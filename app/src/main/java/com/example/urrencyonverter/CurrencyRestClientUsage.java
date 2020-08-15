@@ -2,7 +2,8 @@ package com.example.urrencyonverter;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
+import com.example.urrencyonverter.ClientRest.CurrencyRestClient;
+import com.example.urrencyonverter.ClientRest.OnJSONResponseCallback;
 import cz.msebera.android.httpclient.Header;
 import org.json.*;
 import com.loopj.android.http.*;
@@ -19,13 +20,11 @@ class CurrencyRestClientUsage {
                 try {
                     rate = (Double) response.get(fromToName);
                 } catch(ClassCastException e){
-                    Integer value = 0;
                     try {
-                        value = (Integer) response.get(fromToName);
+                        rate = Double.valueOf((int)response.get(fromToName));
                     } catch (JSONException jsonException) {
                         jsonException.printStackTrace();
                     }
-                    rate = Double.valueOf(value);
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
